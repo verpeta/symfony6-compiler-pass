@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -20,5 +22,33 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+
+    App\Service\Game\EventHandler:
+      arguments: [!tagged_iterator { tag: 'app.game.event', index_by: 'key' , default_index_method: 'getEventName'}]
+
+    App\Service\Game\Events\GotMoneyEvent:
+      tags:
+        - {name: 'app.game.event'}
+
+    App\Service\Game\Events\KillEvent:
+      lazy: true
+      tags:
+        - {name: 'app.game.event'}
+
+    App\Service\Game\Events\MatchEndEvent:
+      lazy: true
+      tags:
+        - {name: 'app.game.event'}
+
+    App\Service\Game\Events\MatchStartEvent:
+      tags:
+          - {name: 'app.game.event'}
+
+    App\Service\Game\Events\ShotEvent:
+      tags:
+        - {name: 'app.game.event'}
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+#    _instanceof:
+#      App\Service\Game\Events\IGameEvent:
+#        tags: ['app.game.event']
